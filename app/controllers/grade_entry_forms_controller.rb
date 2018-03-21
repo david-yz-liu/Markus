@@ -347,7 +347,7 @@ class GradeEntryFormsController < ApplicationController
             totals,
             @grade_entry_form,
             overwrite)
-          GradeEntryItem.import grades
+          GradeEntryItem.import grades, on_duplicate_key_update: [:out_of, :position]
           columns = @grade_entry_form.grade_entry_items.reload
           next
         end
@@ -355,6 +355,7 @@ class GradeEntryFormsController < ApplicationController
           [[g.grade_entry_student_id, g.grade_entry_item_id], g.grade]
         end
         all_grades = Hash[grade_list]
+        byebug
         s = grade_entry_students[row[0].encode('UTF-8')]
         raise CSVInvalidLineError if s.nil?
 
