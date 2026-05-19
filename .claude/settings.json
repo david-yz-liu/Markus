@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -m ' *)",
+      "mcp__github__search_pull_requests",
+      "Bash(git checkout *)",
+      "Bash(git pull *)",
+      "mcp__github__search_issues",
+      "mcp__github__pull_request_read",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read -r f; /home/david/Markus/.venv/bin/pre-commit run --files \"$f\"; } 2>/dev/null || true",
+            "statusMessage": "Running pre-commit..."
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "ruby-lsp@claude-plugins-official": true
+  }
+}
